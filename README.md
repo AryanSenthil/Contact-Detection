@@ -4,6 +4,10 @@
 
 An automated slope-based transition detection algorithm that precisely identifies the initial contact point during Instron compression testing of piezoelectric pressure sensors. Achieves sub-millimeter accuracy with quantifiable uncertainty metrics.
 
+## Demo
+
+![Application Demo](Screencast%20from%2011-01-2025%2009_34_15%20PM.gif)
+
 ## Table of Contents
 
 - [Background](#background)
@@ -14,7 +18,6 @@ An automated slope-based transition detection algorithm that precisely identifie
 - [Usage](#usage)
   - [GUI Application](#gui-application)
   - [Jupyter Notebook](#jupyter-notebook)
-- [Technical Details](#technical-details)
 - [Data Format](#data-format)
 - [Results](#results)
 - [Repository Structure](#repository-structure)
@@ -105,55 +108,6 @@ The notebook includes:
 - Step-by-step implementation with explanations
 - Visualization of results
 - Sample data analysis
-
-## Technical Details
-
-### Algorithm Overview
-
-The algorithm performs slope change detection to identify where the load cell first makes contact with the surface.
-
-**For discrete data points:**
-- Strain: {ε_i} for i = 0 to n-1
-- Stress: {σ_i} for i = 0 to n-1
-- Extension: {e_i} for i = 0 to n-1
-
-**Discrete derivative (slope) at interval [i, i+1]:**
-
-```
-m_i = (σ_{i+1} - σ_i) / (ε_{i+1} - ε_i)  if ε_{i+1} ≠ ε_i
-m_i = 0                                   otherwise
-```
-
-**Detection Criterion:**
-
-For each index i ∈ {2, 3, ..., n-3}, compute:
-
-- **Pre-transition slopes:** S_before(i) = {m_{i-2}, m_{i-1}}
-- **At-transition slope:** m_i
-- **Post-transition slopes:** S_after(i) = {m_i, m_{i+1}}
-
-**Transition Condition (point i identified as contact if):**
-
-1. max(S_before(i)) ≤ τ
-2. min(S_after(i)) > -τ
-3. m_i > -τ
-4. σ_i ≥ 0
-5. ε_i ≥ 0
-
-where τ = 0.1 is the tolerance parameter.
-
-**Statistical Estimation:**
-
-- Mean extension: Average of all detected transition points
-- Standard error: Quantifies uncertainty in the measurement
-
-### Physical Interpretation
-
-The algorithm detects regions where:
-- The material exhibits plateau behavior: |m| ≤ τ (pre-transition)
-- Followed by continued positive or near-zero deformation: m > -τ (post-transition)
-
-The tolerance τ defines the sensitivity threshold for distinguishing between a flat response and active deformation.
 
 ## Data Format
 
