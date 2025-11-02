@@ -177,8 +177,7 @@ For questions, issues, or contributions, please open an issue on the GitHub repo
 If you use this code in your research, please cite:
 
 ```
-Senthil, A. (2025). Automated Contact Detection for Instron Compression Testing
-of Piezoelectric Pressure Sensors. GitHub repository:
+Senthil, A. (2025). Automated Contact Detection for Instron Compression Testing. GitHub repository:
 https://github.com/AryanSenthil/Contact-Detection
 ```
 
