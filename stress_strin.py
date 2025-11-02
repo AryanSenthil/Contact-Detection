@@ -12,7 +12,7 @@ class StressStrainAnalyzer:
     def __init__(self, root):
         self.root = root
         self.root.title("Stress-Strain Analyzer")
-        self.root.geometry("1600x900")
+        self.root.geometry("1400x900")
         
         # Data storage
         self.extension = []
@@ -53,7 +53,7 @@ class StressStrainAnalyzer:
         self.uncertainty_label = ttk.Label(results_frame, text="---", foreground="blue", font=('Arial', 10, 'bold'))
         self.uncertainty_label.grid(row=1, column=1, sticky=tk.W, pady=2, padx=5)
         
-        # Main content area - 3 columns
+        # Main content area - 2 columns
         # Left: Data preview
         data_frame = ttk.LabelFrame(self.root, text="Data Preview", padding="10")
         data_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S), padx=5, pady=5)
@@ -77,28 +77,18 @@ class StressStrainAnalyzer:
         self.tree.heading('Strain', text='Strain')
         self.tree.heading('Stress', text='Stress (MPa)')
         
-        # Middle: Stress vs Extension plot
-        plot_frame1 = ttk.LabelFrame(self.root, text="Stress vs Extension", padding="10")
-        plot_frame1.grid(row=1, column=1, sticky=(tk.W, tk.E, tk.N, tk.S), padx=5, pady=5)
+        # Right: Stress vs Extension plot
+        plot_frame = ttk.LabelFrame(self.root, text="Stress vs Extension", padding="10")
+        plot_frame.grid(row=1, column=1, sticky=(tk.W, tk.E, tk.N, tk.S), padx=5, pady=5)
         
-        self.fig1 = Figure(figsize=(6, 8), dpi=100)
-        self.ax1 = self.fig1.add_subplot(111)
-        self.canvas1 = FigureCanvasTkAgg(self.fig1, master=plot_frame1)
-        self.canvas1.get_tk_widget().pack(fill=tk.BOTH, expand=True)
-        
-        # Right: Stress vs Strain plot
-        plot_frame2 = ttk.LabelFrame(self.root, text="Stress vs Strain", padding="10")
-        plot_frame2.grid(row=1, column=2, sticky=(tk.W, tk.E, tk.N, tk.S), padx=5, pady=5)
-        
-        self.fig2 = Figure(figsize=(6, 8), dpi=100)
-        self.ax2 = self.fig2.add_subplot(111)
-        self.canvas2 = FigureCanvasTkAgg(self.fig2, master=plot_frame2)
-        self.canvas2.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+        self.fig = Figure(figsize=(8, 8), dpi=100)
+        self.ax = self.fig.add_subplot(111)
+        self.canvas = FigureCanvasTkAgg(self.fig, master=plot_frame)
+        self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
         
         # Configure grid weights for responsive layout
-        self.root.columnconfigure(0, weight=1, minsize=400)
-        self.root.columnconfigure(1, weight=1, minsize=500)
-        self.root.columnconfigure(2, weight=1, minsize=500)
+        self.root.columnconfigure(0, weight=1, minsize=450)
+        self.root.columnconfigure(1, weight=2, minsize=700)
         self.root.rowconfigure(1, weight=1)
         
     def import_file(self):
@@ -153,38 +143,26 @@ class StressStrainAnalyzer:
                                   f"{self.stress[i]:.6f}"))
     
     def plot_data(self, show_extension_line=False):
-        # Clear plots
-        self.ax1.clear()
-        self.ax2.clear()
+        # Clear plot
+        self.ax.clear()
         
         if len(self.extension) > 0:
             # Stress vs Extension plot
-            self.ax1.plot(self.extension, self.stress, 'b-', linewidth=1.5, label='Stress-Extension')
+            self.ax.plot(self.extension, self.stress, 'b-', linewidth=1.5, label='Stress-Extension')
             
             if show_extension_line and self.mean_extension is not None:
-                self.ax1.axvline(self.mean_extension, color='r', linestyle='--', 
+                self.ax.axvline(self.mean_extension, color='r', linestyle='--', 
                               linewidth=2, label=f'Mean Extension: {self.mean_extension:.5f} mm')
             
-            self.ax1.axhline(0, color='k', linestyle=':', linewidth=1, alpha=0.5)
-            self.ax1.set_xlabel('Extension (mm)', fontsize=11)
-            self.ax1.set_ylabel('Stress (MPa)', fontsize=11)
-            self.ax1.set_title('Stress vs. Extension', fontsize=12, fontweight='bold')
-            self.ax1.grid(True, alpha=0.3)
-            self.ax1.legend()
+            self.ax.axhline(0, color='k', linestyle=':', linewidth=1, alpha=0.5)
+            self.ax.set_xlabel('Extension (mm)', fontsize=12)
+            self.ax.set_ylabel('Stress (MPa)', fontsize=12)
+            self.ax.set_title('Stress vs. Extension', fontsize=13, fontweight='bold')
+            self.ax.grid(True, alpha=0.3)
+            self.ax.legend()
             
-            # Stress vs Strain plot
-            self.ax2.plot(self.strain, self.stress, 'g-', linewidth=1.5, label='Stress-Strain')
-            self.ax2.axhline(0, color='k', linestyle=':', linewidth=1, alpha=0.5)
-            self.ax2.set_xlabel('Strain', fontsize=11)
-            self.ax2.set_ylabel('Stress (MPa)', fontsize=11)
-            self.ax2.set_title('Stress vs. Strain', fontsize=12, fontweight='bold')
-            self.ax2.grid(True, alpha=0.3)
-            self.ax2.legend()
-            
-        self.fig1.tight_layout()
-        self.fig2.tight_layout()
-        self.canvas1.draw()
-        self.canvas2.draw()
+        self.fig.tight_layout()
+        self.canvas.draw()
     
     def find_extension(self):
         if len(self.extension) == 0:
