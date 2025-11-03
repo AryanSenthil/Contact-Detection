@@ -2,9 +2,6 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/AryanSenthil/Contact-Detection/graphs/commit-activity)
-[![GitHub issues](https://img.shields.io/github/issues/AryanSenthil/Contact-Detection.svg)](https://github.com/AryanSenthil/Contact-Detection/issues)
-[![GitHub stars](https://img.shields.io/github/stars/AryanSenthil/Contact-Detection.svg)](https://github.com/AryanSenthil/Contact-Detection/stargazers)
 
 **Author:** Aryan Senthil
 
